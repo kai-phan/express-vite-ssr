@@ -1,6 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 import { createServer } from 'vite';
+import { getServerData } from './src/functions.js';
 
 const app = express();
 
@@ -20,7 +21,13 @@ app.use('*', async (req, res) => {
     const template = await vite.transformIndexHtml(url, fs.readFileSync('./index.html', 'utf-8'));
     const { render } = await vite.ssrLoadModule('/src/entry-server.jsx');
 
-    const html = template.replace('<!--outlet-->', render);
+    const { getServerData } = await vite.ssrLoadModule('/src/functions.js');
+
+    const data = await getServerData();
+
+    const script = `<script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>`;
+
+    const html = template.replace('<!--outlet-->', `${render(data)} ${script}`);
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     vite.ssrFixStacktrace(e);

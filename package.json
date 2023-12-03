@@ -9,6 +9,7 @@
     "serve": "node server-prod.js",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "build:functions": "vite build --ssr src/functions.js --outDir dist/functions",
     "build": "run-p build:*"
   },
   "keywords": [],

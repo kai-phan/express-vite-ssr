@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-const App = () => {
-  const [count, setCount] = useState(10);
+const App = ({ data }) => {
+  const [count, setCount] = useState(data.stock);
 
   return (
     <main>
@@ -10,6 +10,7 @@ const App = () => {
       <div>
         <div>{count}</div>
         <button onClick={() => setCount(count + 1)}>Count</button>
+        {JSON.stringify(data)}
       </div>
     </main>
   );
