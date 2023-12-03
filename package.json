@@ -1,0 +1,27 @@
+{
+  "name": "express-vite-ssr",
+  "version": "1.0.0",
+  "description": "Server side rendering with vite and express",
+  "main": "dist/server/entry-server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server-dev.js",
+    "serve": "node server-prod.js",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "build": "run-p build:*"
+  },
+  "keywords": [],
+  "author": "kai",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "npm-run-all": "^4.1.5",
+    "vite": "^5.0.4"
+  }
+}
