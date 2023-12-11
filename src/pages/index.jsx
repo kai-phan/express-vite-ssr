@@ -17,7 +17,7 @@ export default function Page({ stock }) {
 
 export const getServersideProps = async () => {
   await new Promise((resolve) => {
-    setTimeout(resolve, 3000);
+    setTimeout(resolve, 1000);
   });
 
   return {
@@ -25,4 +25,30 @@ export const getServersideProps = async () => {
       stock: 10,
     },
   };
+}
+
+export const getMeta = () => {
+  return [
+    {
+      tag: 'meta',
+      attributes: {
+        name: 'description',
+        content: 'This is index page',
+      }
+    },
+    {
+      tag: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css',
+      }
+    },
+    {
+      tag: 'link',
+      attributes: {
+        rel: 'icon',
+        href: 'https://www.google.com/favicon.ico',
+      }
+    }
+  ]
 }

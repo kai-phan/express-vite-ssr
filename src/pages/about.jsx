@@ -12,7 +12,7 @@ export default function Page({ title }) {
 
 export const getServersideProps = async () => {
   await new Promise((resolve) => {
-    setTimeout(resolve, 3000);
+    setTimeout(resolve, 1000);
   });
 
   return {
@@ -20,4 +20,20 @@ export const getServersideProps = async () => {
       title: 'Hello server side props',
     },
   };
+}
+
+export const getMeta = () => {
+  return [
+    {
+      tag: 'meta',
+      attributes: {
+        name: 'description',
+        content: 'This is about page',
+      }
+    },
+    {
+      tag: 'title',
+      children: 'About',
+    }
+  ]
 }
