@@ -1,7 +1,6 @@
 import express from 'express';
 import fs from 'fs';
 import { createServer } from 'vite';
-import { getServerData } from './src/functions.js';
 
 const app = express();
 
@@ -21,13 +20,16 @@ app.use('*', async (req, res) => {
     const template = await vite.transformIndexHtml(url, fs.readFileSync('./index.html', 'utf-8'));
     const { render } = await vite.ssrLoadModule('/src/entry-server.jsx');
 
-    const { getServerData } = await vite.ssrLoadModule('/src/functions.js');
+    const pageContext = await match(url, async (page) => await vite.ssrLoadModule(page));
 
-    const data = await getServerData();
+    const data = await pageContext.getServersideProps?.({ req, res });
+    const Component = pageContext.default;
 
     const script = `<script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>`;
 
-    const html = template.replace('<!--outlet-->', `${render(data)} ${script}`);
+    const appHTML = render({ Component, ...data });
+
+    const html = template.replace('<!--outlet-->', `${appHTML} ${script}`);
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     vite.ssrFixStacktrace(e);
@@ -39,3 +41,10 @@ app.use('*', async (req, res) => {
 app.listen(3000, () => {
   console.log('http://localhost:3000');
 });
+
+async function match(url, cb) {
+  if (url === '/') return await cb('/src/pages/index.jsx');
+  if (url === '/about') return await cb('/src/pages/about.jsx');
+
+  return await cb('/src/pages/404.jsx');
+}

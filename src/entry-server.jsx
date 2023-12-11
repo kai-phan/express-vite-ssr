@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 
-import App from './app';
+import App from './_app.jsx';
 
-export const render = (data) => {
-  return renderToString(<App data={data} />);
+export const render = (props) => {
+  return renderToString(<App {...props} />);
 };
